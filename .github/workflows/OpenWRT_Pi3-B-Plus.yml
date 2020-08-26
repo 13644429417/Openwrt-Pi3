@@ -1,4 +1,4 @@
-name: OpenWRT_Pi
+name: OpenWRT_Pi 3B Plus
 
 on:
   watch:
