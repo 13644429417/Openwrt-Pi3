@@ -59,16 +59,16 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
-      - name: Multi-core compile
-        run: |
-          cd lede
-          echo -e "$(nproc) thread compile"
-          df -h
-          make -j$(nproc)
-          df -h
+     # - name: Multi-core compile
+        #run: |
+         # cd lede
+         # echo -e "$(nproc) thread compile"
+          #df -h
+         # make -j$(nproc)
+         # df -h
 
       - name: Single-core compile
-        if: failure()
+       # if: failure()
         run: |
           df -h
           cd lede
