@@ -37,14 +37,15 @@ jobs:
 
       - name: Clone source and install
         run: |
+          cd ~/
           git clone https://github.com/coolsnowwolf/lede
-          cd lede
+          cd ~/lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Download and Load custom configuration
         run: |
-          cd lede
+          cd ~/lede
           curl -fsSL https://raw.githubusercontent.com/13644429417/Openwrt-Pi3/master/config/.config >.config
           ./scripts/feeds install -a
           make defconfig
@@ -54,14 +55,14 @@ jobs:
         #  if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
       - name: Download package
         run: |
-          cd lede
+          cd ~/lede
           make download -j$(nproc)
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
      # - name: Multi-core compile
         #run: |
-         # cd lede
+         # cd ~/lede
          # echo -e "$(nproc) thread compile"
           #df -h
          # make -j$(nproc)
@@ -71,7 +72,7 @@ jobs:
        # if: failure()
         run: |
           df -h
-          cd lede
+          cd ~/lede
           make -j1 V=s
           df -h
 
@@ -85,7 +86,7 @@ jobs:
       - name: Setup Upload dictionary
         if: always()
         run: |
-          cd lede/bin/targets/*/*
+          cd ~/lede/bin/targets/*/*
           rm -rf packages
           echo "::set-env name=FIRMWARE::$(pwd)"
 
