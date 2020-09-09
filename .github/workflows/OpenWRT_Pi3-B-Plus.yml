@@ -47,6 +47,7 @@ jobs:
         run: |
           cd ~/lede
           curl -fsSL https://raw.githubusercontent.com/13644429417/Openwrt-Pi3/master/config/.config >.config
+          ./scripts/feeds update -a
           ./scripts/feeds install -a
           make defconfig
 
@@ -60,28 +61,36 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
-     # - name: Multi-core compile
-        #run: |
-         # cd ~/lede
-         # echo -e "$(nproc) thread compile"
-          #df -h
-         # make -j$(nproc)
-         # df -h
-
-      - name: Single-core compile
-       # if: failure()
+      - name: Multi-core compile
         run: |
-          df -h
           cd ~/lede
-          make -j1 V=s
+          echo -e "$(nproc) thread compile"
           df -h
+          make -j$(nproc)
+          df -h
+
+      - name: Multi-core compile
+        if: failure()
+        run: |
+          cd ~/lede
+          echo -e "$(nproc) thread compile"
+          df -h
+          make -j$(nproc)
+          df -h
+     # - name: Single-core compile
+       # if: failure()
+       # run: |
+       #   df -h
+       #   cd ~/lede
+       #   make -j1 V=s
+       #   df -h
 
       - name: Upload entire bin directory
         uses: actions/upload-artifact@main
         if: always()
         with:
           name: LEDE-RaspberryPi-bin-dictionary
-          path: lede/bin
+          path: ~/lede/bin
 
       - name: Setup Upload dictionary
         if: always()
