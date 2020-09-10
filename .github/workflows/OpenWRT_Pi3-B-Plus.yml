@@ -69,21 +69,21 @@ jobs:
           make -j$(nproc)
           df -h
 
-      - name: Multi-core compile
+   #   - name: Multi-core compile
+    #    if: failure()
+     #   run: |
+      #    cd ~/lede
+       #   echo -e "$(nproc) thread compile"
+        #  df -h
+         # make -j$(nproc)
+         # df -h
+      - name: Single-core compile
         if: failure()
         run: |
+          df -h
           cd ~/lede
-          echo -e "$(nproc) thread compile"
+          make -j1 V=s
           df -h
-          make -j$(nproc)
-          df -h
-     # - name: Single-core compile
-       # if: failure()
-       # run: |
-       #   df -h
-       #   cd ~/lede
-       #   make -j1 V=s
-       #   df -h
 
       - name: Upload entire bin directory
         uses: actions/upload-artifact@main
